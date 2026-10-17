@@ -1,0 +1,64 @@
+name: minimarket-hito3
+
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Crea el archivo .env antes de iniciar}
+      MYSQL_DATABASE: db_minimarket_pro413
+      MYSQL_USER: ${MYSQL_USER:-minimarket_app}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Crea el archivo .env antes de iniciar}
+    ports:
+      - "127.0.0.1:${MYSQL_PORT:-3307}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/01-schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./database/02-seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=\"$$MYSQL_PASSWORD\" mysql -h 127.0.0.1 -u\"$$MYSQL_USER\" db_minimarket_pro413 -e 'SELECT id FROM Producto LIMIT 0' >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    volumes:
+      - ./tests:/var/www/app/tests:ro
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: db_minimarket_pro413
+      DB_USER: ${MYSQL_USER:-minimarket_app}
+      DB_PASSWORD: ${MYSQL_PASSWORD:?Crea el archivo .env antes de iniciar}
+    ports:
+      - "127.0.0.1:${BACKEND_PORT:-8081}:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://127.0.0.1/health') === false ? 1 : 0);"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    environment:
+      API_BASE_URL: http://backend/api/productos
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-8080}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://127.0.0.1/') === false ? 1 : 0);"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  mysql_data:

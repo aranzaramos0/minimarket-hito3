@@ -1,0 +1,14 @@
+OK: crear devuelve 201
+OK: consultar por id
+OK: editar datos
+OK: editar sin cambios
+OK: rechazar stock negativo
+OK: rechazar JSON inválido
+OK: rechazar tipo de contenido incorrecto
+OK: rechazar método no soportado
+OK: eliminar lógicamente
+OK: excluir eliminado del listado
+OK: excluir eliminado de consulta individual
+OK: no editar eliminado
+OK: segunda eliminación devuelve 404
+ID conservado para comprobación SQL: 6

@@ -1,0 +1,7 @@
+OK: listado real desde MySQL
+OK: crear desde formulario PHP
+OK: editar precio y stock
+OK: eliminar tras confirmación
+OK: excluir registro eliminado de interfaz y API
+OK: rechazar POST sin CSRF válido
+OK: vista móvil sin desbordamiento global

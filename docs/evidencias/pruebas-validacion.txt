@@ -1,0 +1,14 @@
+OK: valores cero y fecha bisiesta
+OK: campos vacíos
+OK: fecha imposible
+OK: precio negativo
+OK: stock negativo
+OK: stock decimal
+OK: precio con tres decimales
+OK: precio fuera de DECIMAL(10,2)
+OK: stock fuera de INT
+OK: nombre de 101 caracteres
+OK: valores máximos permitidos
+OK: tipo incorrecto
+OK: fecha con byte nulo
+13 pruebas de validación correctas.
