@@ -77,4 +77,3 @@ Problemas al iniciar
 - Los cambios en PHP no aparecen: reconstruir con docker compose up -d --build.
 Documentación
 El [informe técnico](docs/Informe_Tecnico_Minimarket.pdf) explica la arquitectura e incluye las evidencias. 
-En [VALIDACION.md](docs/VALIDACION.md) se detallan las pruebas realizadas con PHP y MySQL locales y las comprobaciones pendientes de la ejecución con Docker.
